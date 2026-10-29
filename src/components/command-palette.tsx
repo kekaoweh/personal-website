@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { copyEmail } from "@/components/toast";
 import { projects, site, socials } from "@/content/site";
-import { cycleAccent, toggleTheme } from "@/lib/prefs";
+import { toggleTheme } from "@/lib/prefs";
 
 const OPEN_EVENT = "site:palette";
 
@@ -45,7 +45,6 @@ export function CommandPalette() {
       { id: "copy-email", group: "Actions", label: "Copy email address", hint: site.email, run: () => copyEmail(site.email) },
       { id: "pdf", group: "Actions", label: "Download résumé as PDF", run: go("/resume?print") },
       { id: "theme", group: "Actions", label: "Toggle light / dark", hint: "t", run: toggleTheme },
-      { id: "accent", group: "Actions", label: "Change accent color", hint: "a", run: cycleAccent },
       ...socials
         .filter((s) => !s.href.startsWith("mailto:"))
         .map((s) => ({

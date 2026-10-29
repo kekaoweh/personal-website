@@ -44,7 +44,7 @@ function Spotlight() {
         <StatusBadge status={spotlight.status} />
       </div>
       <div className="flex flex-col gap-1.5">
-        <h2 className="font-serif text-4xl leading-none">{spotlight.title}</h2>
+        <h2 className="text-2xl leading-none font-semibold tracking-tight">{spotlight.title}</h2>
         <p className="text-muted-foreground text-sm text-pretty">
           {spotlight.tagline}. Describe the video you want; a Claude-powered
           agent studies your footage, writes the script, cuts the timeline and
@@ -69,7 +69,7 @@ function Spotlight() {
       <p className="text-muted-foreground flex items-center justify-between font-mono text-[11px]">
         <span>{spotlight.stack.slice(0, 4).join(" · ")}</span>
         <span className="flex items-center gap-1 transition-colors group-hover:text-accent">
-          case study
+          Case study
           <span className="transition-transform group-hover:translate-x-0.5">→</span>
         </span>
       </p>
@@ -137,11 +137,11 @@ export default function Home() {
                 description={p.description}
                 meta={
                   p.status === "Live" ? (
-                    <span className="text-accent">● live</span>
+                    <span className="text-accent">● Live</span>
                   ) : p.status === "In development" ? (
-                    "in progress"
+                    "In progress"
                   ) : p.status === "Open source" ? (
-                    "open source"
+                    "Open source"
                   ) : (
                     p.period
                   )

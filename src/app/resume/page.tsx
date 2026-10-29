@@ -56,9 +56,9 @@ export default function ResumePage() {
           {experience.map((e) => (
             <article key={e.company} className="flex flex-col gap-2 break-inside-avoid">
               <div className="flex items-baseline justify-between gap-4">
-                <h3 className="text-base">
+                <h3 className="text-base font-medium">
                   {e.company}{" "}
-                  <span className="text-muted-foreground">— {e.role}</span>
+                  <span className="text-muted-foreground font-normal">— {e.role}</span>
                 </h3>
                 <span className="text-muted-foreground shrink-0 font-mono text-xs">
                   {formatMonth(e.start)} – {formatMonth(e.end)}
@@ -86,9 +86,9 @@ export default function ResumePage() {
             .map((p) => (
               <article key={p.slug} className="flex flex-col gap-2 break-inside-avoid">
                 <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-base">
+                  <h3 className="text-base font-medium">
                     {p.title}{" "}
-                    <span className="text-muted-foreground">— {p.tagline}</span>
+                    <span className="text-muted-foreground font-normal">— {p.tagline}</span>
                   </h3>
                   <span className="text-muted-foreground shrink-0 font-mono text-xs">
                     {p.period}

@@ -17,9 +17,8 @@ export default function ProjectsPage() {
         title="Projects"
         description={
           <p>
-            Products I&apos;ve designed and built end to end, from mobile apps
-            used by hundreds of students to AI tools in production. Open any
-            one for the full case study.
+            Selected products I&apos;ve designed and built end to end, from a
+            mobile platform with 500+ active users to AI tools in production.
           </p>
         }
         back

@@ -53,7 +53,7 @@ export default async function ProjectPage({
         description={<p>{p.tagline}</p>}
         back
         backHref="/projects"
-        backLabel="projects"
+        backLabel="Projects"
       />
 
       <div className="flex flex-col gap-12 pt-10">
@@ -193,14 +193,14 @@ export default async function ProjectPage({
           style={delay(9)}
         >
           <Link href={`/projects/${prev.slug}`} className="group flex flex-col gap-1">
-            <span className="text-muted-foreground font-mono text-[11px]">← previous</span>
+            <span className="text-muted-foreground font-mono text-[11px]">← Previous</span>
             <span className="transition-colors group-hover:text-accent">{prev.title}</span>
           </Link>
           <Link
             href={`/projects/${next.slug}`}
             className="group flex flex-col items-end gap-1 text-right"
           >
-            <span className="text-muted-foreground font-mono text-[11px]">next →</span>
+            <span className="text-muted-foreground font-mono text-[11px]">Next →</span>
             <span className="transition-colors group-hover:text-accent">{next.title}</span>
           </Link>
         </nav>

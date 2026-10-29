@@ -11,10 +11,6 @@
   color-scheme: light;
 }
 
-:root[data-accent="red"] { --accent: #e5484d; }
-:root[data-accent="amber"] { --accent: #f2a01e; }
-:root[data-accent="green"] { --accent: #2fa36b; }
-:root[data-accent="violet"] { --accent: #8e4ec6; }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -47,13 +43,19 @@
   --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-instrument-serif);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+  font-size: 15px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
   transition: background-color 0.3s, color 0.3s;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
 }
 
 /* Soft accent glow behind the header */

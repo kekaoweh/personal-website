@@ -1,31 +1,11 @@
-// Visitor preferences (theme + accent), stored in localStorage and applied as
-// data attributes on <html>. The inline script in layout.tsx applies them
-// before first paint to avoid a flash.
-
-export const ACCENTS = ["blue", "red", "amber", "green", "violet"] as const;
-
-// Keyboard shortcuts handled by components/shortcuts.tsx, listed in the footer.
-export const SHORTCUTS = [
-  { key: "⌘K", label: "menu" },
-  { key: "h", label: "home" },
-  { key: "p", label: "projects" },
-  { key: "r", label: "résumé" },
-  { key: "t", label: "theme" },
-  { key: "a", label: "accent" },
-];
+// Visitor theme preference, stored in localStorage and applied as a data
+// attribute on <html>. The inline script in layout.tsx applies it before first
+// paint to avoid a flash.
 
 function store(key: string, value: string) {
   try {
     localStorage.setItem(key, value);
   } catch {}
-}
-
-export function cycleAccent() {
-  const root = document.documentElement;
-  const current = root.dataset.accent ?? "blue";
-  const next = ACCENTS[(ACCENTS.indexOf(current as never) + 1) % ACCENTS.length];
-  root.dataset.accent = next;
-  store("accent", next);
 }
 
 export function toggleTheme() {
@@ -39,4 +19,4 @@ export function toggleTheme() {
   store("theme", next);
 }
 
-export const prefsScript = `try{var d=document.documentElement,t=localStorage.getItem("theme"),a=localStorage.getItem("accent");if(t)d.dataset.theme=t;if(a)d.dataset.accent=a;if(/[?&]static\\b/.test(location.search))d.dataset.motion="off"}catch(e){}`;
+export const prefsScript = `try{var d=document.documentElement,t=localStorage.getItem("theme");if(t)d.dataset.theme=t;localStorage.removeItem("accent");if(/[?&]static\\b/.test(location.search))d.dataset.motion="off"}catch(e){}`;

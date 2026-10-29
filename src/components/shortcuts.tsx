@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { cycleAccent, toggleTheme } from "@/lib/prefs";
+import { toggleTheme } from "@/lib/prefs";
 
 export function Shortcuts() {
   const router = useRouter();
@@ -25,9 +25,6 @@ export function Shortcuts() {
           break;
         case "t":
           toggleTheme();
-          break;
-        case "a":
-          cycleAccent();
           break;
       }
     }

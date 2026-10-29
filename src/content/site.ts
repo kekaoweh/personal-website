@@ -6,7 +6,7 @@ export const site = {
   title: "Kekachukwu Oweh — Full-Stack Developer",
   description:
     "Full-stack developer building human-centered mobile and web apps. Computing Science student at Trinity Western University, minoring in Psychology.",
-  bio: "Full-stack developer with 2+ years shipping production mobile and web apps: React and React Native on the front, Node.js and Python on the back, deployed on AWS. I study Computing Science at Trinity Western University with a minor in Psychology, and use both to build technology designed around how people actually think.",
+  bio: "Full-stack developer with 2+ years of experience shipping production mobile and web applications with React, React Native, Node.js and Python on AWS. Computing Science student at Trinity Western University, minoring in Psychology, with a focus on human-centered software.",
   // Shown in the live status line under the bio.
   location: "Langley, BC",
   timeZone: "America/Vancouver",
@@ -16,22 +16,6 @@ export const site = {
   github: "kekaoweh",
 };
 
-export const featured: {
-  title: string;
-  description: string;
-  href: string;
-}[] = [
-  {
-    title: "Projects",
-    description: "Case studies of the products I've designed and built",
-    href: "/projects",
-  },
-  {
-    title: "Résumé",
-    description: "Experience, skills and education on one printable page",
-    href: "/resume",
-  },
-];
 
 export type Experience = {
   company: string;
@@ -202,7 +186,7 @@ export const projects: Project[] = [
     title: "micro/journal",
     tagline: "60-second daily journaling",
     description:
-      "A journaling app built on a psychology idea: one prompt a day and a 60-second timer, because constrained input reduces overthinking.",
+      "A journaling app designed around the paradox of choice: one prompt a day and a 60-second writing window to reduce overthinking.",
     period: "2026",
     status: "Open source",
     highlights: [

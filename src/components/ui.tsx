@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { AccentButton, ThemeButton } from "@/components/controls";
+import { ThemeButton } from "@/components/controls";
 import { TimelineVisual } from "@/components/timeline-visual";
-import { type Project, socials } from "@/content/site";
-import { SHORTCUTS } from "@/lib/prefs";
+import { type Project, site, socials } from "@/content/site";
 
 export const delay = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
@@ -12,7 +11,7 @@ export function PageHeader({
   eyebrow,
   back,
   backHref = "/",
-  backLabel = "home",
+  backLabel = "Home",
 }: {
   title: string;
   description?: React.ReactNode;
@@ -25,7 +24,6 @@ export function PageHeader({
     <header className="relative flex flex-col gap-3">
       <div className="no-print text-muted-foreground absolute -top-1 right-0 flex gap-1">
         <ThemeButton />
-        <AccentButton />
       </div>
       {back ? (
         <Link
@@ -41,7 +39,7 @@ export function PageHeader({
         eyebrow
       )}
       <h1
-        className="rise pr-16 font-serif text-5xl leading-[1.05] tracking-tight sm:text-6xl"
+        className="rise pr-16 text-4xl leading-[1.05] font-semibold tracking-[-0.035em] sm:text-5xl"
         style={delay(1)}
       >
         {title}
@@ -150,7 +148,7 @@ export function ProjectCard({ project: p }: { project: Project }) {
         )}
         <div className="flex flex-1 flex-col gap-1">
           <p className="flex items-center justify-between gap-3">
-            <span className="font-serif text-2xl leading-none">{p.title}</span>
+            <span className="text-lg leading-none font-semibold tracking-tight">{p.title}</span>
             <StatusBadge status={p.status} />
           </p>
           <p className="text-muted-foreground text-sm text-pretty">{p.tagline}</p>
@@ -189,10 +187,10 @@ export function IndexRow({
       </span>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="flex items-baseline gap-3">
-          <span className="transition-transform duration-300 group-hover:translate-x-1">
+          <span className="font-medium transition-transform duration-300 group-hover:translate-x-1">
             {title}
             {subtitle && (
-              <span className="text-muted-foreground hidden sm:inline">
+              <span className="text-muted-foreground hidden font-normal sm:inline">
                 {" "}
                 — {subtitle}
               </span>
@@ -256,37 +254,34 @@ export function StatusBadge({ status }: { status: string }) {
 
 export function Footer() {
   return (
-    <footer className="no-print mt-auto flex flex-col gap-6 pt-20 pb-16">
-      <div className="flex flex-col gap-2">
-        <p className="font-serif text-2xl">Let&apos;s build something.</p>
-        <p className="text-muted-foreground text-sm">
-          Open to internships, co-ops and freelance work.
-        </p>
+    <footer className="no-print mt-auto flex flex-col gap-4 pt-20 pb-24">
+      <SectionLabel>Contact</SectionLabel>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3">
+        <a
+          href={`mailto:${site.email}`}
+          className="text-sm font-medium transition-colors hover:text-accent"
+        >
+          {site.email}
+        </a>
+        <div className="flex gap-5">
+          {socials
+            .filter((s) => !s.href.startsWith("mailto:"))
+            .map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+              >
+                {s.label}
+              </a>
+            ))}
+        </div>
       </div>
-      <div className="flex flex-row flex-wrap gap-x-5 gap-y-2">
-        {socials.map((s) => (
-          <a
-            key={s.label}
-            href={s.href}
-            target="_blank"
-            rel="noreferrer"
-            className="group relative text-sm"
-          >
-            {s.label}
-            <span className="bg-accent absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-          </a>
-        ))}
-      </div>
-      <div className="text-muted-foreground hidden gap-4 font-mono text-[11px] sm:flex">
-        {SHORTCUTS.map((s) => (
-          <span key={s.key} className="flex items-center gap-1.5">
-            <kbd className="rounded border border-border bg-surface px-1.5 py-px font-mono">
-              {s.key}
-            </kbd>
-            {s.label}
-          </span>
-        ))}
-      </div>
+      <p className="text-muted-foreground text-xs">
+        {site.name} · {site.location}
+      </p>
     </footer>
   );
 }
