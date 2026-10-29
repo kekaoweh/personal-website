@@ -49,7 +49,7 @@ export function TimelineVisual({ compact = false }: { compact?: boolean }) {
             style={{ width: `${c.w}%` }}
             className={`rounded-[3px] ${
               c.kind === "accent"
-                ? "bg-accent/40"
+                ? "from-accent/50 to-accent-2/50 bg-linear-to-r"
                 : c.kind === "title"
                   ? "border border-dashed border-foreground/25"
                   : "bg-foreground/12"

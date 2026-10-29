@@ -75,15 +75,16 @@ export function SectionLabel({
   );
   return (
     <div className="text-muted-foreground flex items-center gap-3 font-mono text-xs tracking-wider uppercase">
+      <span className="bg-accent size-1 shrink-0 rounded-[1px]" />
       {href ? (
-        <Link href={href} className="group flex gap-1.5 hover:text-foreground">
+        <Link href={href} className="group -ml-1 flex gap-1.5 hover:text-foreground">
           {label}
           <span className="transition-transform group-hover:translate-x-0.5">→</span>
         </Link>
       ) : (
-        <span className="flex gap-1.5">{label}</span>
+        <span className="-ml-1 flex gap-1.5">{label}</span>
       )}
-      <span className="h-px flex-1 bg-border" />
+      <span className="h-px flex-1 bg-linear-to-r from-border to-transparent" />
     </div>
   );
 }
@@ -124,10 +125,18 @@ export function Pattern({
           r={d.on ? 2.2 : 1}
           className={
             d.on
-              ? "fill-foreground/70 transition-all duration-500 group-hover:fill-accent"
+              ? "opacity-55 transition-opacity duration-500 group-hover:opacity-100"
               : "fill-foreground/15"
           }
-          style={{ transitionDelay: `${(d.x + d.y) * 25}ms` }}
+          style={
+            d.on
+              ? {
+                  // Lit dots sweep from accent blue to cyan across the pattern.
+                  fill: `color-mix(in oklab, var(--accent-2) ${Math.round((d.x / (cols - 1)) * 100)}%, var(--accent))`,
+                  transitionDelay: `${(d.x + d.y) * 25}ms`,
+                }
+              : undefined
+          }
         />
       ))}
     </svg>
@@ -135,12 +144,12 @@ export function Pattern({
 }
 
 export const cardClass =
-  "group flex h-full flex-col gap-4 rounded-xl border border-border bg-surface p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_8px_30px_-12px_var(--accent)]";
+  "group flex h-full flex-col gap-4 rounded-xl border border-border bg-surface p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-[0_10px_40px_-18px_var(--accent)]";
 
 export function ProjectCard({ project: p }: { project: Project }) {
   return (
     <li>
-      <Link href={`/projects/${p.slug}`} className={cardClass}>
+      <Link href={`/projects/${p.slug}`} className={cardClass} data-light>
         {p.slug === "picasso" ? (
           <TimelineVisual compact />
         ) : (
@@ -215,7 +224,7 @@ export function IndexRow({
   return (
     <li>
       {href ? (
-        <Link href={href} className={className}>
+        <Link href={href} className={className} data-light>
           {body}
         </Link>
       ) : (
@@ -225,13 +234,23 @@ export function IndexRow({
   );
 }
 
-export function Chips({ items, small }: { items: string[]; small?: boolean }) {
+// Pill list; an optional tone (a CSS color) tints the pills for categorized lists.
+export function Chips({ items, tone }: { items: string[]; tone?: string }) {
   return (
     <div className="flex flex-wrap gap-1.5">
       {items.map((t) => (
         <span
           key={t}
-          className={`text-muted-foreground rounded-full border border-border font-mono ${small ? "px-1.5 py-px text-[10px]" : "px-2 py-0.5 text-[11px]"}`}
+          className="text-muted-foreground rounded-md border border-border px-2 py-0.5 font-mono text-[11px]"
+          style={
+            tone
+              ? {
+                  color: `color-mix(in oklab, ${tone} 75%, var(--foreground))`,
+                  borderColor: `color-mix(in oklab, ${tone} 22%, transparent)`,
+                  backgroundColor: `color-mix(in oklab, ${tone} 6%, transparent)`,
+                }
+              : undefined
+          }
         >
           {t}
         </span>
@@ -240,13 +259,25 @@ export function Chips({ items, small }: { items: string[]; small?: boolean }) {
   );
 }
 
+const STATUS_COLOR: Record<string, string> = {
+  Live: "var(--live)",
+  "In development": "var(--warn)",
+  "Open source": "var(--accent-3)",
+  Shipped: "var(--accent)",
+};
+
 export function StatusBadge({ status }: { status: string }) {
-  const live = status === "Live";
+  const color = STATUS_COLOR[status] ?? "var(--muted-foreground)";
   return (
-    <span className="text-muted-foreground inline-flex items-center gap-1.5 font-mono text-[11px]">
-      <span
-        className={`size-1.5 rounded-full ${live ? "bg-accent" : status === "In development" ? "bg-amber-500" : "bg-foreground/30"}`}
-      />
+    <span
+      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-px font-mono text-[10.5px] whitespace-nowrap"
+      style={{
+        color,
+        borderColor: `color-mix(in oklab, ${color} 30%, transparent)`,
+        backgroundColor: `color-mix(in oklab, ${color} 8%, transparent)`,
+      }}
+    >
+      <span className="size-1.5 rounded-full" style={{ backgroundColor: color }} />
       {status}
     </span>
   );

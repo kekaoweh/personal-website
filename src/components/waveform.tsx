@@ -67,13 +67,13 @@ export function Waveform() {
                       : undefined,
                     transition:
                       "transform 0.25s cubic-bezier(0.22,1,0.36,1), background-color 0.2s, opacity 0.2s",
-                    backgroundColor:
-                      isHovered || a.weight === maxWeight
-                        ? "var(--accent)"
-                        : "var(--foreground)",
+                    // Older months are blue, recent months shift toward cyan.
+                    backgroundColor: isHovered
+                      ? "var(--foreground)"
+                      : `color-mix(in oklab, var(--accent-2) ${Math.round((i / (activity.length - 1)) * 100)}%, var(--accent))`,
                     opacity: isHovered
                       ? 1
-                      : r3(0.18 + near * 0.5 + jitter(i + 7) * 0.12),
+                      : r3(0.3 + (a.weight / maxWeight) * 0.25 + near * 0.45 + jitter(i + 7) * 0.08),
                   }}
                 />
               </span>

@@ -1,36 +1,57 @@
 @import "tailwindcss";
 
+/* Palette: cool neutrals plus a blue → cyan → violet accent family.
+   Status colors carry meaning (live, in progress, open source). */
 :root {
-  --background: #fbfaf7;
-  --foreground: #1a1a1a;
-  --muted-foreground: #74716b;
-  --border: #e6e3dc;
-  --surface: #f3f1ec;
-  --accent: #3b6cff;
-  --grain-opacity: 0.05;
+  --background: #f6f7f9;
+  --foreground: #0b0d12;
+  --muted-foreground: #5c6370;
+  --border: #e1e4ea;
+  --surface: #ffffffb3;
+  --accent: #3b5bff;
+  --accent-2: #0891b2;
+  --accent-3: #7c3aed;
+  --live: #059669;
+  --warn: #d97706;
+  --grid: #0b0d1209;
+  --glow: 0.14;
+  --grain-opacity: 0.03;
   color-scheme: light;
 }
 
-
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --background: #0d0d0c;
-    --foreground: #f1efe9;
-    --muted-foreground: #8f8c85;
-    --border: #ffffff1a;
-    --surface: #ffffff0a;
-    --grain-opacity: 0.07;
+    --background: #07080c;
+    --foreground: #e9ebf1;
+    --muted-foreground: #8b91a1;
+    --border: #ffffff14;
+    --surface: #ffffff07;
+    --accent: #6f8cff;
+    --accent-2: #22d3ee;
+    --accent-3: #a78bfa;
+    --live: #34d399;
+    --warn: #fbbf24;
+    --grid: #ffffff08;
+    --glow: 0.2;
+    --grain-opacity: 0.05;
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --background: #0d0d0c;
-  --foreground: #f1efe9;
-  --muted-foreground: #8f8c85;
-  --border: #ffffff1a;
-  --surface: #ffffff0a;
-  --grain-opacity: 0.07;
+  --background: #07080c;
+  --foreground: #e9ebf1;
+  --muted-foreground: #8b91a1;
+  --border: #ffffff14;
+  --surface: #ffffff07;
+  --accent: #6f8cff;
+  --accent-2: #22d3ee;
+  --accent-3: #a78bfa;
+  --live: #34d399;
+  --warn: #fbbf24;
+  --grid: #ffffff08;
+  --glow: 0.2;
+  --grain-opacity: 0.05;
   color-scheme: dark;
 }
 
@@ -41,6 +62,10 @@
   --color-border: var(--border);
   --color-surface: var(--surface);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-live: var(--live);
+  --color-warn: var(--warn);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -58,20 +83,64 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
-/* Soft accent glow behind the header */
+/* Backdrop: a fine technical grid fading out under a blue/cyan aurora */
 body::before {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
-  height: 520px;
+  height: 760px;
   pointer-events: none;
   z-index: -1;
+  background:
+    radial-gradient(ellipse 45% 55% at 35% 0%, color-mix(in oklab, var(--accent) calc(var(--glow) * 100%), transparent), transparent 70%),
+    radial-gradient(ellipse 40% 50% at 68% 0%, color-mix(in oklab, var(--accent-2) calc(var(--glow) * 70%), transparent), transparent 70%),
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 100% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* Gradient hairline border, for highlighted panels */
+.edge {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(135deg,
+      color-mix(in oklab, var(--accent) 55%, transparent),
+      var(--border) 35%,
+      var(--border) 65%,
+      color-mix(in oklab, var(--accent-2) 55%, transparent)) border-box;
+}
+
+/* Cursor-following light on cards (position set by components/pointer-light.tsx) */
+[data-light] {
+  position: relative;
+  isolation: isolate;
+}
+[data-light]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
   background: radial-gradient(
-    ellipse 60% 100% at 50% 0%,
-    color-mix(in oklab, var(--accent) 14%, transparent),
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--accent) 12%, transparent),
     transparent 70%
   );
-  transition: background 0.4s;
+}
+[data-light]:hover::after {
+  opacity: 1;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 ::selection {

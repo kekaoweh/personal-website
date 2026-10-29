@@ -22,19 +22,19 @@ export default function Image() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "#0d0d0c",
-          color: "#f1efe9",
+          background: "#07080c",
+          color: "#e9ebf1",
           backgroundImage:
-            "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(59,108,255,0.28), transparent 70%)",
+            "radial-gradient(ellipse 45% 60% at 30% 0%, rgba(111,140,255,0.32), transparent 70%), radial-gradient(ellipse 40% 55% at 70% 0%, rgba(34,211,238,0.18), transparent 70%)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 24, color: "#8f8c85" }}>
-          <div style={{ width: 12, height: 12, borderRadius: 6, background: "#3b6cff" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 24, color: "#8b91a1" }}>
+          <div style={{ width: 12, height: 12, borderRadius: 6, background: "#6f8cff" }} />
           {site.now} · {site.location}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <div style={{ fontSize: 92, letterSpacing: -3, lineHeight: 1 }}>{site.name}</div>
-          <div style={{ fontSize: 34, color: "#8f8c85" }}>
+          <div style={{ fontSize: 34, color: "#8b91a1" }}>
             Full-stack developer · Computing Science & Psychology
           </div>
         </div>
@@ -46,7 +46,9 @@ export default function Image() {
                 width: 5,
                 height: `${h}%`,
                 borderRadius: 3,
-                background: i > 40 ? "#3b6cff" : "rgba(241,239,233,0.35)",
+                // Blend blue (#6f8cff) to cyan (#22d3ee); the OG renderer has no color-mix().
+                background: `rgb(${Math.round(111 + (34 - 111) * (i / 55))}, ${Math.round(140 + (211 - 140) * (i / 55))}, ${Math.round(255 + (238 - 255) * (i / 55))})`,
+                opacity: 0.55 + (i / 55) * 0.45,
               }}
             />
           ))}

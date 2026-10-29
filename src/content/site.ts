@@ -241,21 +241,25 @@ export const projects: Project[] = [
   },
 ];
 
-export const skills: { group: string; items: string[] }[] = [
+export const skills: { group: string; tone: string; items: string[] }[] = [
   {
     group: "Languages",
+    tone: "var(--accent)",
     items: ["TypeScript", "JavaScript (ES6+)", "Python", "Java", "C", "C++", "HTML5", "CSS3", "SQL"],
   },
   {
     group: "Frontend",
+    tone: "var(--accent-2)",
     items: ["React", "React Native", "Next.js", "Tailwind CSS", "CSS Animation", "Responsive Design", "Figma"],
   },
   {
     group: "Backend",
+    tone: "var(--accent-3)",
     items: ["Node.js", "Express", "FastAPI", "Flask", "REST APIs", "Socket.io", "PostgreSQL", "MongoDB"],
   },
   {
     group: "Infra & AI",
+    tone: "var(--live)",
     items: ["AWS (EC2, Lambda)", "Docker", "Vercel", "CI/CD", "Git", "PyTorch", "NumPy"],
   },
 ];

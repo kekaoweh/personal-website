@@ -32,7 +32,11 @@ function Spotlight() {
   const done = spotlight.built?.length ?? 0;
   const total = done + (spotlight.next?.length ?? 0);
   return (
-    <Link href={`/projects/${spotlight.slug}`} className={`${cardClass} p-5`}>
+    <Link
+      href={`/projects/${spotlight.slug}`}
+      className={`${cardClass} edge p-5`}
+      data-light
+    >
       <div className="flex items-center justify-between">
         <span className="text-muted-foreground flex items-center gap-2 font-mono text-[11px] tracking-wider uppercase">
           <span className="relative flex size-1.5">
@@ -61,7 +65,7 @@ function Spotlight() {
         </div>
         <div className="h-1 overflow-hidden rounded-full bg-border">
           <div
-            className="bg-accent h-full rounded-full"
+            className="from-accent to-accent-2 h-full rounded-full bg-linear-to-r"
             style={{ width: `${Math.round((done / total) * 100)}%` }}
           />
         </div>
@@ -137,11 +141,11 @@ export default function Home() {
                 description={p.description}
                 meta={
                   p.status === "Live" ? (
-                    <span className="text-accent">● Live</span>
+                    <span className="text-live">● Live</span>
                   ) : p.status === "In development" ? (
-                    "In progress"
+                    <span className="text-warn">● In progress</span>
                   ) : p.status === "Open source" ? (
-                    "Open source"
+                    <span className="text-accent-3">● Open source</span>
                   ) : (
                     p.period
                   )
@@ -162,7 +166,7 @@ export default function Home() {
               <div key={s.group} className="contents">
                 <dt className="text-sm sm:pt-0.5">{s.group}</dt>
                 <dd>
-                  <Chips items={s.items} />
+                  <Chips items={s.items} tone={s.tone} />
                 </dd>
               </div>
             ))}

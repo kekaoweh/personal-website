@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CommandPalette } from "@/components/command-palette";
 import { Dock } from "@/components/dock";
+import { PointerLight } from "@/components/pointer-light";
 import { Shortcuts } from "@/components/shortcuts";
 import { Toaster } from "@/components/toast";
 import { site } from "@/content/site";
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="font-sans">
         <Shortcuts />
+        <PointerLight />
         <CommandPalette />
         <Toaster />
         <Dock />
