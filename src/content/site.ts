@@ -10,7 +10,10 @@ export const site = {
   // Shown in the live status line under the bio.
   location: "Langley, BC",
   timeZone: "America/Vancouver",
-  now: "Building SoccerCheck",
+  now: "Building Picasso",
+  url: "https://kekwebsite.vercel.app",
+  email: "owehjessie@gmail.com",
+  github: "kekaoweh",
 };
 
 export const featured: {
@@ -91,13 +94,65 @@ export type Project = {
   description: string;
   period: string;
   status: "Live" | "In development" | "Shipped" | "Open source";
+  role?: string;
   highlights: string[];
   stack: string[];
+  // Optional case-study sections, shown on /projects/[slug]
+  pipeline?: { step: string; detail: string }[];
+  built?: string[];
+  next?: string[];
   href?: string; // live site or demo
   repo?: string; // source code
 };
 
 export const projects: Project[] = [
+  {
+    slug: "picasso",
+    title: "Picasso",
+    tagline: "A studio for moving pictures",
+    description:
+      "An AI video editor where an agent makes the whole video. Describe what you want, add footage, references and music, and pick a style: a Claude-powered agent studies the media, writes the script and cuts the timeline, and the backend renders an MP4. Ask for changes in plain language to get a new version.",
+    period: "Oct 2026 – Present",
+    status: "In development",
+    role: "Designer & sole developer",
+    highlights: [
+      "Built an editing agent on the Claude Agent SDK with no shell or file access, only four project-scoped studio tools: list assets, view frames as contact sheets, write the script, and set the timeline.",
+      "Designed a validated timeline schema (trims, captions, Ken Burns motion, transitions, music bed) that an ffmpeg pipeline renders to 16:9, 9:16, 1:1 or 4:5.",
+      "Styles pair editing direction for the agent with render settings like color grade and caption design; five built in, plus user-made styles.",
+      "Users sign in with their own Claude credential, encrypted at rest and isolated per user so a run can never fall back to another account.",
+      "Live studio log streams the agent's progress to the editor while it works.",
+    ],
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "FastAPI",
+      "Python",
+      "SQLite",
+      "ffmpeg",
+      "Claude Agent SDK",
+    ],
+    pipeline: [
+      { step: "Brief", detail: "Prompt, footage, references, music and a style" },
+      { step: "Agent", detail: "Claude studies the media and writes the script" },
+      { step: "Timeline", detail: "A validated JSON edit: clips, trims, captions" },
+      { step: "Render", detail: "ffmpeg grades, captions and mixes the cut" },
+      { step: "MP4", detail: "Watch it, then ask for changes in plain words" },
+    ],
+    built: [
+      "Claude editing agent with project-scoped tools",
+      "Timeline schema and ffmpeg renderer",
+      "Studio API, run pipeline and live event stream",
+      "Sign-in with a Claude account or API key",
+      "Editor, studio home and Styles pages",
+    ],
+    next: [
+      "Generating new shots with an AI video model",
+      "Voiceover and auto-captions from speech",
+      "A background job queue for scaling out",
+    ],
+    repo: "https://github.com/kekaoweh/picasso",
+  },
   {
     slug: "recall",
     title: "Recall",
@@ -112,6 +167,12 @@ export const projects: Project[] = [
       "Designed cookie-based authentication for persistent browser sessions; deployed on Vercel with Neon Postgres.",
     ],
     stack: ["Next.js 16", "TypeScript", "Neon Postgres", "Tailwind CSS", "Claude API"],
+    pipeline: [
+      { step: "Paste", detail: "Notes, a reading or any text" },
+      { step: "Generate", detail: "Claude turns it into flashcards" },
+      { step: "Review", detail: "Rate each card Again, Hard, Good or Easy" },
+      { step: "Schedule", detail: "Spaced repetition decides when it returns" },
+    ],
     href: "https://recall-flashcards.spawnlabs.site",
     repo: "https://github.com/kekaoweh/recall",
   },
@@ -129,6 +190,12 @@ export const projects: Project[] = [
       "Push notifications for real-time capacity alerts.",
     ],
     stack: ["React Native", "Expo", "FastAPI", "Python", "Geolocation APIs"],
+    pipeline: [
+      { step: "Arrive", detail: "Player opens the app at the field" },
+      { step: "Locate", detail: "GPS confirms they're within 500 feet" },
+      { step: "Verify", detail: "Device fingerprint blocks duplicate check-ins" },
+      { step: "Alert", detail: "Push notifications track capacity live" },
+    ],
   },
   {
     slug: "micro-journal",
@@ -144,6 +211,18 @@ export const projects: Project[] = [
       "No sign-up: cookie-based per-browser ownership backed by serverless Neon Postgres, with the schema created on first load.",
     ],
     stack: ["Next.js 16", "TypeScript", "Neon Postgres", "Tailwind CSS"],
+    pipeline: [
+      { step: "Prompt", detail: "One question for the day" },
+      { step: "Write", detail: "Typing starts a 60-second timer" },
+      { step: "Lock", detail: "The entry saves with no editing" },
+      { step: "Reflect", detail: "History shows the mood of each day" },
+    ],
+    next: [
+      "Sentiment chart over time",
+      "Day-of-week comparison",
+      "Streak tracking",
+      "Data export",
+    ],
     repo: "https://github.com/kekaoweh/micro-journal",
   },
   {
@@ -232,7 +311,7 @@ export const interests = [
 ];
 
 export const socials: { label: string; href: string }[] = [
-  { label: "Email", href: "mailto:owehjessie@gmail.com" },
+  { label: "Email", href: `mailto:${site.email}` },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/kekaoweh/" },
   { label: "GitHub", href: "https://github.com/kekaoweh" },
 ];
@@ -245,6 +324,7 @@ const timeline: { label: string; start: string; end?: string }[] = [
   { label: "Trinity Western", start: "2025-09" },
   { label: "SoccerCheck", start: "2025-10" },
   { label: "micro/journal", start: "2026-09", end: "2026-09" },
+  { label: "Picasso", start: "2026-10" },
 ];
 
 const NOW = "2026-10";

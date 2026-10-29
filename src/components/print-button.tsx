@@ -1,6 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
+
 export function PrintButton() {
+  // /resume?print (from the command menu) opens the print dialog on arrival.
+  useEffect(() => {
+    if (!new URLSearchParams(window.location.search).has("print")) return;
+    const id = setTimeout(() => window.print(), 400);
+    return () => clearTimeout(id);
+  }, []);
+
   return (
     <button
       type="button"

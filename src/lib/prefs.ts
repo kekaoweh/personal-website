@@ -6,6 +6,7 @@ export const ACCENTS = ["blue", "red", "amber", "green", "violet"] as const;
 
 // Keyboard shortcuts handled by components/shortcuts.tsx, listed in the footer.
 export const SHORTCUTS = [
+  { key: "⌘K", label: "menu" },
   { key: "h", label: "home" },
   { key: "p", label: "projects" },
   { key: "r", label: "résumé" },

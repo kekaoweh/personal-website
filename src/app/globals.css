@@ -93,7 +93,8 @@ body::after {
   to { opacity: 1; transform: none; }
 }
 :root[data-motion="off"] .rise,
-:root[data-motion="off"] .breathe { animation: none; }
+:root[data-motion="off"] .breathe,
+:root[data-motion="off"] .playhead { animation: none; }
 .rise {
   animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc(var(--i, 0) * 70ms);
@@ -106,6 +107,23 @@ body::after {
 }
 .breathe {
   animation: breathe 2.4s ease-in-out infinite;
+}
+
+/* Picasso timeline playhead */
+@keyframes playhead {
+  from { left: 0.75rem; }
+  to { left: calc(100% - 0.75rem); }
+}
+.playhead {
+  animation: playhead 7s linear infinite;
+}
+
+@keyframes palette-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.palette-in {
+  animation: palette-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes pulse-ring {
@@ -130,5 +148,5 @@ body::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise, .breathe { animation: none; }
+  .rise, .breathe, .playhead, .palette-in { animation: none; }
 }

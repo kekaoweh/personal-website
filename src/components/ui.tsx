@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AccentButton, ThemeButton } from "@/components/controls";
-import { socials } from "@/content/site";
+import { TimelineVisual } from "@/components/timeline-visual";
+import { type Project, socials } from "@/content/site";
 import { SHORTCUTS } from "@/lib/prefs";
 
 export const delay = (i: number) => ({ "--i": i }) as React.CSSProperties;
@@ -10,11 +11,15 @@ export function PageHeader({
   description,
   eyebrow,
   back,
+  backHref = "/",
+  backLabel = "home",
 }: {
   title: string;
   description?: React.ReactNode;
   eyebrow?: React.ReactNode;
   back?: boolean;
+  backHref?: string;
+  backLabel?: string;
 }) {
   return (
     <header className="relative flex flex-col gap-3">
@@ -24,13 +29,13 @@ export function PageHeader({
       </div>
       {back ? (
         <Link
-          href="/"
+          href={backHref}
           className="no-print rise text-muted-foreground group w-fit font-mono text-xs hover:text-foreground"
         >
           <span className="inline-block transition-transform group-hover:-translate-x-0.5">
             ←
           </span>{" "}
-          home
+          {backLabel}
         </Link>
       ) : (
         eyebrow
@@ -96,10 +101,16 @@ function seededDots(seed: string, cols: number, rows: number) {
   return dots;
 }
 
-// Small generative dot pattern, seeded by a string so each tile is unique.
-function Pattern({ seed }: { seed: string }) {
-  const cols = 22;
-  const rows = 5;
+// Generative dot pattern, seeded by a string so each project looks unique.
+export function Pattern({
+  seed,
+  cols = 22,
+  rows = 5,
+}: {
+  seed: string;
+  cols?: number;
+  rows?: number;
+}) {
   const dots = seededDots(seed, cols, rows);
   return (
     <svg
@@ -125,31 +136,31 @@ function Pattern({ seed }: { seed: string }) {
   );
 }
 
-export function Tile({
-  href,
-  title,
-  description,
-}: {
-  href: string;
-  title: string;
-  description: string;
-}) {
+export const cardClass =
+  "group flex h-full flex-col gap-4 rounded-xl border border-border bg-surface p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_8px_30px_-12px_var(--accent)]";
+
+export function ProjectCard({ project: p }: { project: Project }) {
   return (
     <li>
-      <Link
-        href={href}
-        className="group flex h-full flex-col gap-4 rounded-xl border border-border bg-surface p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_8px_30px_-12px_var(--accent)]"
-      >
-        <Pattern seed={title} />
-        <div>
-          <p className="flex items-center justify-between">
-            {title}
-            <span className="text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent">
-              ↗
-            </span>
+      <Link href={`/projects/${p.slug}`} className={cardClass}>
+        {p.slug === "picasso" ? (
+          <TimelineVisual compact />
+        ) : (
+          <Pattern seed={p.title} />
+        )}
+        <div className="flex flex-1 flex-col gap-1">
+          <p className="flex items-center justify-between gap-3">
+            <span className="font-serif text-2xl leading-none">{p.title}</span>
+            <StatusBadge status={p.status} />
           </p>
-          <p className="text-muted-foreground text-sm">{description}</p>
+          <p className="text-muted-foreground text-sm text-pretty">{p.tagline}</p>
         </div>
+        <p className="text-muted-foreground flex items-center justify-between gap-3 font-mono text-[11px]">
+          <span className="truncate">{p.stack.slice(0, 3).join(" · ")}</span>
+          <span className="shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-accent">
+            →
+          </span>
+        </p>
       </Link>
     </li>
   );
@@ -245,7 +256,7 @@ export function StatusBadge({ status }: { status: string }) {
 
 export function Footer() {
   return (
-    <footer className="no-print mt-auto flex flex-col gap-6 pt-20">
+    <footer className="no-print mt-auto flex flex-col gap-6 pt-20 pb-16">
       <div className="flex flex-col gap-2">
         <p className="font-serif text-2xl">Let&apos;s build something.</p>
         <p className="text-muted-foreground text-sm">

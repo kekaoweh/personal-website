@@ -1,32 +1,80 @@
+import Link from "next/link";
 import { LocalClock } from "@/components/controls";
+import { GitHubActivity } from "@/components/github-activity";
+import { TimelineVisual } from "@/components/timeline-visual";
 import {
   Chips,
   Footer,
   IndexRow,
   PageHeader,
   SectionLabel,
-  Tile,
+  StatusBadge,
+  cardClass,
   delay,
 } from "@/components/ui";
 import { Waveform } from "@/components/waveform";
-import {
-  education,
-  experience,
-  featured,
-  projects,
-  site,
-  skills,
-} from "@/content/site";
+import { education, experience, projects, site, skills } from "@/content/site";
 
-// Work already listed under Experience is left out of the home projects list.
+const spotlight = projects.find((p) => p.slug === "picasso")!;
+
+// Work already listed under Experience, and the spotlight, are left out of the list.
 const sideProjects = projects.filter(
-  (p) => !experience.some((e) => e.company === p.title),
+  (p) => p !== spotlight && !experience.some((e) => e.company === p.title),
 );
 
 function yearRange(start: string, end?: string) {
   const s = start.slice(0, 4);
   const e = end ? end.slice(0, 4) : "now";
   return s === e ? s : `${s} – ${e}`;
+}
+
+function Spotlight() {
+  const done = spotlight.built?.length ?? 0;
+  const total = done + (spotlight.next?.length ?? 0);
+  return (
+    <Link href={`/projects/${spotlight.slug}`} className={`${cardClass} p-5`}>
+      <div className="flex items-center justify-between">
+        <span className="text-muted-foreground flex items-center gap-2 font-mono text-[11px] tracking-wider uppercase">
+          <span className="relative flex size-1.5">
+            <span className="bg-accent absolute inset-0 animate-[pulse-ring_2s_ease-out_infinite] rounded-full" />
+            <span className="bg-accent relative size-1.5 rounded-full" />
+          </span>
+          Now building
+        </span>
+        <StatusBadge status={spotlight.status} />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <h2 className="font-serif text-4xl leading-none">{spotlight.title}</h2>
+        <p className="text-muted-foreground text-sm text-pretty">
+          {spotlight.tagline}. Describe the video you want; a Claude-powered
+          agent studies your footage, writes the script, cuts the timeline and
+          renders the MP4.
+        </p>
+      </div>
+      <TimelineVisual />
+      <div className="flex flex-col gap-1.5">
+        <div className="text-muted-foreground flex justify-between font-mono text-[11px]">
+          <span>Roadmap</span>
+          <span>
+            {done} shipped · {total - done} next
+          </span>
+        </div>
+        <div className="h-1 overflow-hidden rounded-full bg-border">
+          <div
+            className="bg-accent h-full rounded-full"
+            style={{ width: `${Math.round((done / total) * 100)}%` }}
+          />
+        </div>
+      </div>
+      <p className="text-muted-foreground flex items-center justify-between font-mono text-[11px]">
+        <span>{spotlight.stack.slice(0, 4).join(" · ")}</span>
+        <span className="flex items-center gap-1 transition-colors group-hover:text-accent">
+          case study
+          <span className="transition-transform group-hover:translate-x-0.5">→</span>
+        </span>
+      </p>
+    </Link>
+  );
 }
 
 export default function Home() {
@@ -53,16 +101,12 @@ export default function Home() {
         <Waveform />
       </div>
       <div className="flex flex-col gap-14 pt-10">
-        <section className="rise flex flex-col gap-4" style={delay(4)}>
-          <ul className="grid list-none grid-cols-1 gap-3 sm:grid-cols-2">
-            {featured.map((f) => (
-              <Tile key={f.href} {...f} />
-            ))}
-          </ul>
+        <section className="rise" style={delay(4)}>
+          <Spotlight />
         </section>
 
         <section className="rise flex flex-col gap-2" style={delay(5)}>
-          <SectionLabel>Experience</SectionLabel>
+          <SectionLabel href="/resume">Experience</SectionLabel>
           <ul className="flex flex-col">
             {experience.map((e, i) => (
               <IndexRow
@@ -72,7 +116,7 @@ export default function Home() {
                 subtitle={e.role}
                 description={e.summary}
                 meta={yearRange(e.start, e.end)}
-                href="/resume"
+                href={`/projects/${e.company.toLowerCase()}`}
               />
             ))}
           </ul>
@@ -86,7 +130,7 @@ export default function Home() {
             {sideProjects.map((p, i) => (
               <IndexRow
                 key={p.slug}
-                href={`/projects#${p.slug}`}
+                href={`/projects/${p.slug}`}
                 index={i + 1}
                 title={p.title}
                 subtitle={p.tagline}
@@ -107,7 +151,11 @@ export default function Home() {
           </ul>
         </section>
 
-        <section className="rise flex flex-col gap-5" style={delay(7)}>
+        <div className="rise" style={delay(7)}>
+          <GitHubActivity />
+        </div>
+
+        <section className="rise flex flex-col gap-5" style={delay(8)}>
           <SectionLabel>Toolkit</SectionLabel>
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-[7rem_1fr]">
             {skills.map((s) => (
@@ -121,7 +169,7 @@ export default function Home() {
           </dl>
         </section>
 
-        <section className="rise flex flex-col gap-4" style={delay(8)}>
+        <section className="rise flex flex-col gap-4" style={delay(9)}>
           <SectionLabel>Education</SectionLabel>
           <ul className="flex flex-col gap-3">
             {education.map((e) => (
